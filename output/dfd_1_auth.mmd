@@ -1,0 +1,20 @@
+graph TB
+    subgraph TB1["Trust Boundary: Trusted Domain"]
+        AA["Authenticated Agent"]
+        AM["Authenticated<br>MCP Server"]
+        AS["Authentication Server"]
+        GW_V["Gateway:<br>Token Validator"]
+        GW_REG["Gateway:<br>Registration & Static Validator"]
+    end
+
+    AA -->|"UC2-1: Auth Request<br>(Client Credentials)"| AS
+    AS -->|"UC2-2: Access Token<br>(Scope + Org)"| AA
+    AM -->|"UC3-1: Auth Request<br>(Client Credentials)"| AS
+    AS -->|"UC3-2: Access Token<br>(Scope + Org)"| AM
+    AA -->|"UC6-1: API Call + Token"| GW_V
+    GW_V -->|"UC6-2: Validate Token"| AS
+    AS -->|"UC6-3: Valid / Rejected"| GW_V
+    AA -->|"UC9-1: Register +<br>Static Validation Request"| GW_REG
+    AM -->|"UC9-2: Register +<br>Static Validation Request"| GW_REG
+    GW_REG -->|"UC9-3: Approved / Rejected"| AA
+    GW_REG -->|"UC9-4: Approved / Rejected"| AM

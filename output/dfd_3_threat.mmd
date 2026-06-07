@@ -1,0 +1,21 @@
+graph TB
+    RS(["Resource Server"])
+
+    subgraph TB1["Trust Boundary: Trusted Domain"]
+        GW["Gateway (iPaaS)"]
+        AM["Authenticated<br>MCP Server"]
+    end
+
+    subgraph TB2["Trust Boundary: Untrusted Domain"]
+        UA["Agent A<br>(Unauthenticated)"]
+        UB["Agent B<br>(Unauthenticated)"]
+        UM["MCP Server<br>(Unauthenticated)"]
+    end
+
+    UA <-->|"UC12: Direct Communication<br>(No Gateway, No Audit)"| UB
+    UA -.->|"UC10: THREAT<br>PAT Token Direct Access<br>Bypasses Gateway & Audit"| RS
+    UA -->|"UC11: Route via<br>Unauthenticated MCP"| UM
+    UM -.->|"UC11: THREAT<br>Direct Access<br>Bypasses Auth & Audit"| RS
+
+    GW -->|"Correct Path"| AM
+    AM -->|"Correct Path"| RS

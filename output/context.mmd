@@ -1,0 +1,33 @@
+graph TB
+    User(["User"])
+    RS(["Resource Server"])
+
+    subgraph TD["Trusted Domain"]
+        AA["Authenticated Agent"]
+        AS["Authentication Server"]
+        GW["Gateway (iPaaS)"]
+        AM["Authenticated<br>MCP Server"]
+        AL[("Audit Log")]
+    end
+
+    subgraph UD["Untrusted Domain"]
+        UA["Agent A<br>(Unauthenticated)"]
+        UB["Agent B<br>(Unauthenticated)"]
+        UM["MCP Server<br>(Unauthenticated)"]
+    end
+
+    User -->|"Task Request"| AA
+    User -.->|"Direct Request"| UA
+    AA -->|"Auth Request"| AS
+    AS -->|"Access Token"| AA
+    AM -->|"Auth Request"| AS
+    AS -->|"Access Token"| AM
+    AA -->|"API Call (Token)"| GW
+    GW -->|"Forwarded Request<br>(Agent / MCP)"| AM
+    GW -->|"Audit Record"| AL
+    AM -->|"Data Access"| RS
+
+    UA <-->|"Direct Communication<br>(No Gateway)"| UB
+    UA -.->|"THREAT: Direct Access<br>(PAT Token)"| RS
+    UA -.->|"THREAT: Route via"| UM
+    UM -.->|"THREAT: Direct Access"| RS

@@ -1,0 +1,42 @@
+graph TB
+    User(["User"])
+    RS(["Resource Server"])
+
+    subgraph TB1["Trust Boundary: Trusted Domain"]
+        AA["Authenticated Agent"]
+        AS["Authentication Server"]
+        GW_V["Gateway:<br>Token Validator"]
+        GW_P["Gateway:<br>Request Proxy"]
+        GW_L["Gateway:<br>Audit Logger"]
+        AM["Authenticated<br>MCP Server"]
+        AL[("Audit Log")]
+    end
+
+    subgraph TB2["Trust Boundary: Untrusted Domain"]
+        UA["Agent A<br>(Unauthenticated)"]
+        UB["Agent B<br>(Unauthenticated)"]
+        UM["MCP Server<br>(Unauthenticated)"]
+    end
+
+    User -->|"1: Task Request"| AA
+    AA -->|"2: Auth Request"| AS
+    AS -->|"3: Access Token"| AA
+    AM -->|"4: Auth Request"| AS
+    AS -->|"5: Access Token"| AM
+    AA -->|"6: API Call + Token"| GW_V
+    GW_V -->|"7: Validate Token"| AS
+    AS -->|"8: Validation Result"| GW_V
+    GW_V -->|"9: Authorized Request"| GW_P
+    GW_P -->|"10: Log Traffic"| GW_L
+    GW_L -->|"11: Write Audit"| AL
+    GW_P -->|"12: Forward Request"| AM
+    AM -->|"13: Data Request"| RS
+    RS -->|"14: Data Response"| AM
+    AM -->|"15: Response"| GW_P
+    GW_P -->|"16: Response"| AA
+    AA -->|"17: Task Result"| User
+
+    UA <-->|"Direct Comm<br>(No Gateway)"| UB
+    UA -.->|"THREAT: PAT Token<br>Direct Access"| RS
+    UA -.->|"THREAT: Route via"| UM
+    UM -.->|"THREAT: Direct Access"| RS

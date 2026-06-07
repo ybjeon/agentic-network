@@ -1,0 +1,30 @@
+graph TB
+    User(["User"])
+    RS(["Resource Server"])
+
+    subgraph TB1["Trust Boundary: Trusted Domain"]
+        AA["Authenticated Agent"]
+        AA2["Other Authenticated Agent"]
+        AS["Authentication Server"]
+        GW_V["Gateway:<br>Token Validator"]
+        GW_P["Gateway:<br>Request Proxy"]
+        GW_L["Gateway:<br>Audit Logger"]
+        AM["Authenticated<br>MCP Server"]
+        AL[("Audit Log")]
+    end
+
+    User -->|"UC1: Task Request"| AA
+    AA -->|"UC4 / UC5:<br>API Call + Token"| GW_V
+    GW_V -->|"Validate Token"| AS
+    AS -->|"Validation OK"| GW_V
+    GW_V -->|"Authorized Request"| GW_P
+    GW_P -->|"UC8: Log Traffic"| GW_L
+    GW_L -->|"Write Audit"| AL
+    GW_P -->|"UC4: Forward to MCP"| AM
+    GW_P -->|"UC5: Forward to Agent"| AA2
+    AM -->|"UC7: Data Request"| RS
+    RS -->|"Data Response"| AM
+    AM -->|"Response"| GW_P
+    AA2 -->|"Response"| GW_P
+    GW_P -->|"Response"| AA
+    AA -->|"Task Result"| User
