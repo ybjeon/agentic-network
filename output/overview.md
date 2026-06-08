@@ -124,14 +124,14 @@
 
 | ID | 위협 설명 | 대상 컴포넌트 | STRIDE | Impact | Likelihood | Risk | 우선순위 |
 |---|---|---|---|---|---|---|---|
-| T-01 | Authentication Server 사칭을 통한 가짜 Access Token 발급 | Authentication Server | Spoofing | 3 | 2 | 6 | Medium |
-| T-02 | 탈취된 유효 Access Token을 이용한 Replay 공격 | Gateway Token Validator | Spoofing | 3 | 2 | 6 | Medium |
-| T-03 | 토큰 서명 Private Key 탈취로 인한 임의 토큰 위조 | Authentication Server | Tampering, Spoofing | 3 | 1 | 3 | Low |
-| T-04 | Authentication Server를 대상으로 한 DoS/DDoS 공격 | Authentication Server | Denial of Service | 3 | 2 | 6 | Medium |
-| T-05 | Gateway 토큰 검증 로직 우회 (Validation Bypass) | Gateway Token Validator | Elevation of Privilege | 3 | 2 | 6 | Medium |
-| T-06 | 최소 권한 원칙 위반 — 과도한 Scope가 포함된 토큰 발급 | Authentication Server | Elevation of Privilege | 2 | 2 | 4 | Medium |
-| T-07 | 만료된 Access Token 수용 (토큰 갱신 체계 미흡) | Gateway Token Validator | Spoofing | 2 | 2 | 4 | Medium |
-| T-08 | Authentication Server SPOF로 인한 전체 서비스 중단 | Authentication Server | Denial of Service | 3 | 2 | 6 | Medium |
+| T-01 | Authentication Server 사칭을 통한 가짜 Access Token 발급 | Authentication Server | S | 3 | 2 | 6 | Medium |
+| T-02 | 탈취된 유효 Access Token을 이용한 Replay 공격 | Gateway Token Validator | S | 3 | 2 | 6 | Medium |
+| T-03 | 토큰 서명 Private Key 탈취로 인한 임의 토큰 위조 | Authentication Server | T, S | 3 | 1 | 3 | Low |
+| T-04 | Authentication Server를 대상으로 한 DoS/DDoS 공격 | Authentication Server | D | 3 | 2 | 6 | Medium |
+| T-05 | Gateway 토큰 검증 로직 우회 (Validation Bypass) | Gateway Token Validator | E | 3 | 2 | 6 | Medium |
+| T-06 | 최소 권한 원칙 위반 — 과도한 Scope가 포함된 토큰 발급 | Authentication Server | E | 2 | 2 | 4 | Medium |
+| T-07 | 만료된 Access Token 수용 (토큰 갱신 체계 미흡) | Gateway Token Validator | S | 2 | 2 | 4 | Medium |
+| T-08 | Authentication Server SPOF로 인한 전체 서비스 중단 | Authentication Server | D | 3 | 2 | 6 | Medium |
 
 #### Mitigation — Authentication
 
@@ -159,19 +159,19 @@ LLM 기반 Agent의 자율성, 동적 동작, 외부 입력 처리와 관련된 
 
 | ID | 위협 설명 | 대상 컴포넌트 | STRIDE | Impact | Likelihood | Risk | 우선순위 |
 |---|---|---|---|---|---|---|---|
-| T-09 | 사용자 입력을 통한 Direct Prompt Injection으로 Agent 행동 조작 | Authenticated Agent | Tampering, Elevation of Privilege | 3 | 3 | 9 | **High** |
-| T-10 | 외부 데이터(Resource Server 콘텐츠 등) 경유 Indirect Prompt Injection | Authenticated Agent, Authenticated MCP Server | Tampering, Elevation of Privilege | 3 | 3 | 9 | **High** |
-| T-11 | Agent 자율 행동으로 인한 의도치 않은 과도한 API 호출 | Authenticated Agent | Elevation of Privilege | 2 | 3 | 6 | Medium |
-| T-12 | 런타임 Agent 비정상 행동 탐지 불가 (동적 검증 부재) | Gateway, Authenticated Agent | Repudiation | 2 | 3 | 6 | Medium |
-| T-13 | Agent 응답에 민감 데이터 포함되어 외부 노출 | Authenticated Agent | Information Disclosure | 3 | 2 | 6 | Medium |
-| T-14 | 악성 Agent/MCP Server 등록 (정적 검증 우회) | iPaaS 등록 프로세스 | Spoofing, Tampering | 3 | 1 | 3 | Low |
-| T-15 | Unauthenticated Agent 간 직접 통신 (기술적 차단 없음) | Unauthenticated Agent A/B | Tampering, Information Disclosure | 2 | 3 | 6 | Medium |
-| T-16 | Authenticated MCP Server를 경유한 SSRF (Server-Side Request Forgery) | Authenticated MCP Server | Elevation of Privilege, Information Disclosure | 2 | 2 | 4 | Medium |
-| T-25 | Agent 재귀 호출/무한 루프로 인한 리소스·비용 소진 | Authenticated Agent, Gateway | Denial of Service | 2 | 2 | 4 | Medium |
-| T-26 | Agent 시스템 프롬프트 노출 (System Prompt Leakage) | Authenticated Agent | Information Disclosure | 2 | 2 | 4 | Medium |
-| T-27 | LLM Jailbreak를 통한 Agent 보안 제약 우회 | Authenticated Agent | Elevation of Privilege, Tampering | 3 | 2 | 6 | Medium |
-| T-28 | MCP Tool Definition Poisoning (도구 정의에 악성 지시어 삽입) | Authenticated MCP Server | Tampering, Elevation of Privilege | 3 | 2 | 6 | Medium |
-| T-29 | Multi-Agent 신뢰 체인 오염 (침해된 Agent가 타 Agent에 악성 요청 전파) | Authenticated Agent (A→B) | Spoofing, Tampering, Elevation of Privilege | 3 | 2 | 6 | Medium |
+| T-09 | 사용자 입력을 통한 Direct Prompt Injection으로 Agent 행동 조작 | Authenticated Agent | T, E | 3 | 3 | 9 | **High** |
+| T-10 | 외부 데이터(Resource Server 콘텐츠 등) 경유 Indirect Prompt Injection | Authenticated Agent, Authenticated MCP Server | T, E | 3 | 3 | 9 | **High** |
+| T-11 | Agent 자율 행동으로 인한 의도치 않은 과도한 API 호출 | Authenticated Agent | E | 2 | 3 | 6 | Medium |
+| T-12 | 런타임 Agent 비정상 행동 탐지 불가 (동적 검증 부재) | Gateway, Authenticated Agent | R | 2 | 3 | 6 | Medium |
+| T-13 | Agent 응답에 민감 데이터 포함되어 외부 노출 | Authenticated Agent | I | 3 | 2 | 6 | Medium |
+| T-14 | 악성 Agent/MCP Server 등록 (정적 검증 우회) | iPaaS 등록 프로세스 | S, T | 3 | 1 | 3 | Low |
+| T-15 | Unauthenticated Agent 간 직접 통신 (기술적 차단 없음) | Unauthenticated Agent A/B | T, I | 2 | 3 | 6 | Medium |
+| T-16 | Authenticated MCP Server를 경유한 SSRF (Server-Side Request Forgery) | Authenticated MCP Server | E, I | 2 | 2 | 4 | Medium |
+| T-25 | Agent 재귀 호출/무한 루프로 인한 리소스·비용 소진 | Authenticated Agent, Gateway | D | 2 | 2 | 4 | Medium |
+| T-26 | Agent 시스템 프롬프트 노출 (System Prompt Leakage) | Authenticated Agent | I | 2 | 2 | 4 | Medium |
+| T-27 | LLM Jailbreak를 통한 Agent 보안 제약 우회 | Authenticated Agent | E, T | 3 | 2 | 6 | Medium |
+| T-28 | MCP Tool Definition Poisoning (도구 정의에 악성 지시어 삽입) | Authenticated MCP Server | T, E | 3 | 2 | 6 | Medium |
+| T-29 | Multi-Agent 신뢰 체인 오염 (침해된 Agent가 타 Agent에 악성 요청 전파) | Authenticated Agent (A→B) | S, T, E | 3 | 2 | 6 | Medium |
 
 #### Mitigation — Agent 특화
 
@@ -203,15 +203,15 @@ LLM 기반 Agent의 자율성, 동적 동작, 외부 입력 처리와 관련된 
 
 | ID | 위협 설명 | 대상 컴포넌트 | STRIDE | Impact | Likelihood | Risk | 우선순위 |
 |---|---|---|---|---|---|---|---|
-| T-17 | Unauthenticated Agent가 PAT Token 내장으로 Resource Server 직접 접근 | Resource Server, PAT Token | Elevation of Privilege, Spoofing | 3 | 3 | 9 | **High** |
-| T-18 | Unauthenticated MCP Server를 경유한 Resource Server 무단 접근 | Resource Server, Unauthenticated MCP Server | Elevation of Privilege, Information Disclosure | 3 | 3 | 9 | **High** |
-| T-19 | Chinese Wall 정책 위반으로 인한 조직 간 데이터 상호 접근 | Resource Server, Gateway | Information Disclosure, Elevation of Privilege | 3 | 2 | 6 | Medium |
-| T-20 | Unauthenticated 경로 접근으로 인한 Audit Trail 부재 (감사 우회) | Audit Log, Gateway Audit Logger | Repudiation | 3 | 3 | 9 | **High** |
-| T-21 | Authenticated Agent/MCP Server의 할당 Scope 초과 접근 | Authenticated Agent, Authenticated MCP Server | Elevation of Privilege | 3 | 2 | 6 | Medium |
-| T-22 | MCP Server를 우회한 Resource Server 직접 접근 (네트워크 통제 불완전) | Resource Server | Elevation of Privilege | 3 | 2 | 6 | Medium |
-| T-23 | 멀티 사용자 환경에서 요청 컨텍스트 혼용에 의한 타 사용자 데이터 접근 | Authenticated Agent, Resource Server | Information Disclosure, Elevation of Privilege | 3 | 2 | 6 | Medium |
-| T-24 | 감사 로그 조작/삭제로 인한 행위 사실 부인 (내부자 위협) | Audit Log | Tampering, Repudiation | 2 | 1 | 2 | Low |
-| T-30 | MCP Server Confused Deputy — 저권한 사용자 요청을 MCP 고권한 토큰으로 처리 | Authenticated MCP Server, Resource Server | Elevation of Privilege | 3 | 2 | 6 | Medium |
+| T-17 | Unauthenticated Agent가 PAT Token 내장으로 Resource Server 직접 접근 | Resource Server, PAT Token | E, S | 3 | 3 | 9 | **High** |
+| T-18 | Unauthenticated MCP Server를 경유한 Resource Server 무단 접근 | Resource Server, Unauthenticated MCP Server | E, I | 3 | 3 | 9 | **High** |
+| T-19 | Chinese Wall 정책 위반으로 인한 조직 간 데이터 상호 접근 | Resource Server, Gateway | I, E | 3 | 2 | 6 | Medium |
+| T-20 | Unauthenticated 경로 접근으로 인한 Audit Trail 부재 (감사 우회) | Audit Log, Gateway Audit Logger | R | 3 | 3 | 9 | **High** |
+| T-21 | Authenticated Agent/MCP Server의 할당 Scope 초과 접근 | Authenticated Agent, Authenticated MCP Server | E | 3 | 2 | 6 | Medium |
+| T-22 | MCP Server를 우회한 Resource Server 직접 접근 (네트워크 통제 불완전) | Resource Server | E | 3 | 2 | 6 | Medium |
+| T-23 | 멀티 사용자 환경에서 요청 컨텍스트 혼용에 의한 타 사용자 데이터 접근 | Authenticated Agent, Resource Server | I, E | 3 | 2 | 6 | Medium |
+| T-24 | 감사 로그 조작/삭제로 인한 행위 사실 부인 (내부자 위협) | Audit Log | T, R | 2 | 1 | 2 | Low |
+| T-30 | MCP Server Confused Deputy — 저권한 사용자 요청을 MCP 고권한 토큰으로 처리 | Authenticated MCP Server, Resource Server | E | 3 | 2 | 6 | Medium |
 
 #### Mitigation — Authorization
 
@@ -340,3 +340,55 @@ Validation을 통해 T-25 ~ T-30 (6건)을 신규 추가하였으며, 모두 Med
 > Threat Identification 섹션을 T-25 ~ T-30 반영하여 업데이트 완료.
 > 총 위협: 24건 → **30건** (High 5건 / Medium 22건 / Low 3건)
 
+
+## Gateway 도입시 막을 수 있는 Threat 열거
+
+Gateway(iPaaS)를 단일 경유 경로로 강제함으로써 토큰 검증, 접근 통제, 감사 로깅, Rate Limiting을 중앙화하여 차단 가능한 위협.
+
+| Threat ID | 위협 설명 | Gateway가 막는 방식 |
+|---|---|---|
+| T-02 | 탈취된 유효 Access Token을 이용한 Replay 공격 | 토큰 `exp`·`jti` 검증, DPoP 강제 적용으로 재사용 차단 |
+| T-05 | Gateway 토큰 검증 로직 우회 (Validation Bypass) | Gateway 자체가 중앙화된 검증 포인트 — 우회 경로를 구조적으로 제거 |
+| T-06 | 최소 권한 원칙 위반 — 과도한 Scope가 포함된 토큰 발급 | 요청 Scope와 등록된 허용 Scope 대조 검증 및 초과 시 거부 |
+| T-07 | 만료된 Access Token 수용 (토큰 갱신 체계 미흡) | 토큰 `exp` 클레임 엄격 검사, 만료 토큰 즉시 거부 |
+| T-11 | Agent 자율 행동으로 인한 의도치 않은 과도한 API 호출 | Agent별 Rate Limiting 및 호출 빈도 임계치 설정 |
+| T-12 | 런타임 Agent 비정상 행동 탐지 불가 (동적 검증 부재) | 모든 통과 트래픽 실시간 모니터링 및 이상 탐지 Rule 적용 |
+| T-17 | Unauthenticated Agent가 PAT Token 내장으로 Resource Server 직접 접근 | 네트워크 통제와 결합하여 Gateway를 필수 경유 경로로 강제 |
+| T-18 | Unauthenticated MCP Server를 경유한 Resource Server 무단 접근 | 등록되지 않은 MCP Server의 트래픽 차단 |
+| T-19 | Chinese Wall 정책 위반으로 인한 조직 간 데이터 상호 접근 | 토큰 `org_id` 클레임 기반 조직 경계 검사 및 위반 요청 차단 |
+| T-20 | Unauthenticated 경로 접근으로 인한 Audit Trail 부재 (감사 우회) | 모든 통과 트래픽 중앙 Audit Log 기록 (Gateway = 단일 감사 포인트) |
+| T-21 | Authenticated Agent/MCP Server의 할당 Scope 초과 접근 | 요청 시 Scope 재검증 및 초과 접근 차단 |
+| T-22 | MCP Server를 우회한 Resource Server 직접 접근 (네트워크 통제 불완전) | Gateway 경유 강제 라우팅으로 우회 시도 탐지 및 차단 |
+| T-25 | Agent 재귀 호출/무한 루프로 인한 리소스·비용 소진 | 연속 호출 횟수 제한 및 Per-session 비용 임계치 설정 |
+| T-29 | Multi-Agent 신뢰 체인 오염 (침해된 Agent → 타 Agent 악성 요청 전파) | Agent-to-Agent 요청 경유 시 출처 검증 및 헤더 조작 탐지 |
+
+---
+
+## Authorization – User delegation 도입시 막을 수 있는 Threat 열거
+
+User delegation(On-Behalf-Of, OBO) 방식: MCP Server가 Resource Server 접근 시 자체 고권한 토큰 대신, 원 요청 사용자의 권한 클레임(`user_id`, `org_id`, `scope`)을 위임받아 전달. MCP 고권한으로 인한 권한 증폭을 구조적으로 차단.
+
+| Threat ID | 위협 설명 | User Delegation이 막는 방식 |
+|---|---|---|
+| T-19 | Chinese Wall 정책 위반으로 인한 조직 간 데이터 상호 접근 | OBO 토큰에 사용자의 `org_id`가 바인딩되어 조직 경계가 Resource Server까지 전달 |
+| T-21 | Authenticated Agent/MCP Server의 할당 Scope 초과 접근 | OBO는 사용자의 Scope 상한으로 자동 제한 — MCP 자체의 광범위한 Scope 무력화 |
+| T-23 | 멀티 사용자 환경에서 요청 컨텍스트 혼용에 의한 타 사용자 데이터 접근 | 요청별 OBO 토큰 발급으로 사용자 컨텍스트를 격리 |
+| T-30 | MCP Server Confused Deputy — 저권한 사용자 요청을 MCP 고권한 토큰으로 처리 | OBO 방식 자체가 Confused Deputy의 직접적 해결책 — MCP 자체 고권한 토큰으로 RS 접근 불가 |
+
+---
+
+## Agent 단위 보안 솔루션 도입시 막을 수 있는 Threat 열거
+
+Agent 단위 보안 솔루션: Guardrail 레이어, 입력 전처리(Sanitization), 출력 필터, 시스템 프롬프트 보호, Tool Call 허용 목록(Whitelist), Max Steps 제한 등 Agent 프로세스 내부에서 동작하는 통제.
+
+| Threat ID | 위협 설명 | Agent 단위 솔루션이 막는 방식 |
+|---|---|---|
+| T-09 | 사용자 입력을 통한 Direct Prompt Injection으로 Agent 행동 조작 | 입력 전처리(Sanitization) + Guardrail 분류 모델로 악성 지시어 차단 |
+| T-10 | 외부 데이터(Resource Server 콘텐츠 등) 경유 Indirect Prompt Injection | 외부 데이터를 Untrusted Context로 명시 분리 처리 + 콘텐츠 스캐닝 |
+| T-11 | Agent 자율 행동으로 인한 의도치 않은 과도한 API 호출 | Max Steps 제한 + Human-in-the-Loop 검토 게이트 |
+| T-13 | Agent 응답에 민감 데이터 포함되어 외부 노출 | 출력 후처리 필터로 PII·민감 패턴 탐지 및 마스킹 |
+| T-25 | Agent 재귀 호출/무한 루프로 인한 리소스·비용 소진 | Max Steps / Max Tokens 제한으로 루프 강제 종료 |
+| T-26 | Agent 시스템 프롬프트 노출 (System Prompt Leakage) | 출력에 시스템 프롬프트 콘텐츠 포함 여부 탐지 필터 + 민감 정보 미포함 정책 |
+| T-27 | LLM Jailbreak를 통한 Agent 보안 제약 우회 | 출력 검증 Guardrail(별도 분류 모델) + 안전 훈련 기반 제약 레이어 |
+| T-28 | MCP Tool Definition Poisoning (도구 정의에 악성 지시어 삽입) | Tool 정의 메타데이터 등록 시 콘텐츠 스캐닝 + Tool Call 허용 목록 강제 |
+| T-29 | Multi-Agent 신뢰 체인 오염 (침해된 Agent → 타 Agent 악성 요청 전파) | 수신 Agent에서 요청 출처 컨텍스트 검증 + 이상 패턴 탐지 |
